@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>DressMeUp: Outfit Suggester</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <style>
+    body { font-family: sans-serif; max-width: 600px; margin: 2em auto; padding: 1em; background: #faf7f3; }
+    h1 { color: #b85c9e; }
+    label { display: block; margin-top: 1em; }
+    input[type="text"] { width: 80%; margin: 0.3em 0; }
+    select, input[type="number"] { margin-left: 1em; }
+    .outfits { background: #fff; margin-top: 2em; padding: 1em; border-radius: 8px; box-shadow: 0 2px 8px #ddd; }
+    .footer { margin-top: 3em; color: #aaa; font-size: 0.9em; text-align: center; }
+    .checkbox { margin-right: .5em; }
+    button { margin-top: 1.5em; padding: 10px 30px; background: #b85c9e; color: #fff; border: none; border-radius: 5px; font-size: 1em; cursor: pointer; }
+    button:hover { background: #8e4077; }
+    ul { padding-left: 1.2em; }
+  </style>
+</head>
+<body>
+  <h1>👗 DressMeUp: Outfit Suggester</h1>
+  <p>
+    Enter your wardrobe and get creative outfit ideas! <br>
+    Add clothes (comma-separated) for each category. Choose accessories and occasion for tailored suggestions.
+  </p>
+  <form id="dressmeupForm">
+    <label>Tops (e.g., t-shirt, blouse, sweater):
+      <input type="text" id="tops" name="tops">
+    </label>
+    <label>Bottoms (e.g., jeans, skirt, shorts):
+      <input type="text" id="bottoms" name="bottoms">
+    </label>
+    <label>Outerwear (e.g., jacket, blazer, cardigan):
+      <input type="text" id="outerwear" name="outerwear">
+    </label>
+    <label>Shoes (e.g., sneakers, boots, sandals):
+      <input type="text" id="shoes" name="shoes">
+    </label>
+    <label>
+      <input type="checkbox" class="checkbox" id="useAccessories" checked>
+      Include Accessories
+    </label>
+    <label id="accessoriesLabel">Accessories (e.g., scarf, hat, watch):
+      <input type="text" id="accessories" name="accessories">
+    </label>
+    <label>
+      Occasion:
+      <select id="occasion" name="occasion">
+        <option value="Any">Any</option>
+        <option value="Casual">Casual</option>
+        <option value="Work/Business">Work/Business</option>
+        <option value="Party">Party</option>
+        <option value="Date">Date</option>
+        <option value="Sporty">Sporty</option>
+        <option value="Formal">Formal</option>
+        <option value="Outdoor">Outdoor</option>
+      </select>
+    </label>
+    <label>
+      Number of outfit suggestions:
+      <input type="number" id="numOutfits" name="numOutfits" min="1" max="10" value="5">
+    </label>
+    <label>
+      <input type="checkbox" class="checkbox" id="randomize" checked>
+      Randomize outfit order
+    </label>
+    <br>
+    <button type="submit">Suggest Outfits</button>
+  </form>
+  <div class="outfits" id="outfitResults" style="display:none"></div>
+  <div class="footer">
+    Made with ❤️ — DressMeUp (Pure HTML/JS)
+  </div>
+  <script>
+    function parseItems(str) {
+      return Array.from(new Set(str.split(",").map(s => s.trim()).filter(Boolean)));
+    }
+    function cartesian(arrays) {
+      // Returns all combinations (Cartesian product)
+      return arrays.reduce((a, b) => a.flatMap(d => b.map(e => [...d, e])), [[]]);
+    }
+    function occasionFilter(combo, occasion) {
+      if (occasion === "Any") return true;
+      const joined = combo.join(",").toLowerCase();
+      if (occasion === "Formal")
+        return /blazer|suit|dress shoe|heel/.test(joined);
+      if (occasion === "Sporty")
+        return /sneaker|tracksuit|legging|sport/.test(joined);
+      return true;
+    }
+
+    function handleAccessoriesToggle() {
+      const accInput = document.getElementById('accessories');
+      const accLabel = document.getElementById('accessoriesLabel');
+      if (document.getElementById('useAccessories').checked) {
+        accInput.disabled = false;
+        accLabel.style.color = "";
+      } else {
+        accInput.disabled = true;
+        accLabel.style.color = "#bbb";
+        accInput.value = "";
+      }
+    }
+
+    document.getElementById('useAccessories').addEventListener('change', handleAccessoriesToggle);
+
+    document.getElementById('dressmeupForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const resultsDiv = document.getElementById('outfitResults');
+      resultsDiv.style.display = "block";
+      resultsDiv.innerHTML = "";
+      const get = id => document.getElementById(id).value;
+      const useAcc = document.getElementById('useAccessories').checked;
+
+      const wardrobe = {
+        "Tops": parseItems(get('tops')),
+        "Bottoms": parseItems(get('bottoms')),
+        "Outerwear": parseItems(get('outerwear')),
+        "Shoes": parseItems(get('shoes')),
+      };
+      if (useAcc) wardrobe["Accessories"] = parseItems(get('accessories'));
+
+      // Filter out empty categories
+      const avail = Object.entries(wardrobe).filter(([k,v]) => v.length);
+      if (avail.length < 2) {
+        resultsDiv.innerHTML = "<b>Please enter at least two categories with items.</b>";
+        return;
+      }
+      const keys = avail.map(([k]) => k);
+      const lists = avail.map(([k,v]) => v);
+      const combos = cartesian(lists);
+
+      const occasion = get('occasion');
+      let filtered = combos.filter(combo => occasionFilter(combo, occasion));
+      if (!filtered.length) filtered = combos; // fallback
+
+      const num = Math.max(1, Math.min(10, parseInt(get('numOutfits')) || 5));
+      if (document.getElementById('randomize').checked)
+        filtered = filtered.sort(() => Math.random() - 0.5);
+
+      let html = `<h3>Outfit Suggestions (${Math.min(num, filtered.length)}):</h3><ul>`;
+      filtered.slice(0, num).forEach((combo, i) => {
+        html += `<li>${combo.map((itm, idx) => `<b>${keys[idx]}</b>: ${itm}`).join(' / ')}</li>`;
+      });
+      html += "</ul>";
+      resultsDiv.innerHTML = html;
+    });
+
+    // Initialize accessories toggle on load
+    handleAccessoriesToggle();
+  </script>
+</body>
+</html>
