@@ -1,0 +1,1006 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRESS ME UP - Outfit Suggestions</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #c7d2fe 0%, #ddd6fe 100%);
+        }
+        .outfit-card {
+            transition: all 0.3s ease;
+            border: 1px solid rgba(147, 51, 234, 0.1);
+        }
+        .outfit-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(79, 70, 229, 0.15);
+            border-color: rgba(147, 51, 234, 0.3);
+        }
+        .gradient-button {
+            background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            transition: all 0.3s ease;
+        }
+        .gradient-button:hover {
+            background: linear-gradient(135deg, #4338ca 0%, #7e22ce 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(79, 70, 229, 0.3);
+        }
+        .category-tab {
+            transition: all 0.2s ease;
+        }
+        .category-tab.active {
+            background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            color: white;
+        }
+        .brand-title {
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #4f46e5 0%, #9333ea 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 3px 3px 6px rgba(79, 70, 229, 0.2);
+        }
+        .main-container {
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(147, 51, 234, 0.2);
+        }
+        .tag-purple {
+            background: linear-gradient(135deg, #c7d2fe 0%, #ddd6fe 100%);
+            color: #6d28d9;
+        }
+        .tag-blue {
+            background: linear-gradient(135deg, #dbeafe 0%, #c7d2fe 100%);
+            color: #4f46e5;
+        }
+        .custom-shadow {
+            box-shadow: 0 8px 20px rgba(79, 70, 229, 0.15);
+        }
+    </style>
+</head>
+<body class="min-h-screen py-8">
+    <div class="container mx-auto px-4 max-w-6xl">
+        <header class="text-center mb-10">
+            <h1 class="text-5xl md:text-6xl font-extrabold mb-3 brand-title">DRESS ME UP</h1>
+            <p class="text-lg text-indigo-800">Discover creative ways to wear your favorite pieces</p>
+        </header>
+
+        <div class="main-container rounded-2xl shadow-lg p-6 md:p-8 mb-10 custom-shadow">
+            <div class="flex flex-col md:flex-row gap-6">
+                <div class="w-full md:w-1/3">
+                    <h2 class="text-2xl font-semibold text-indigo-900 mb-4">Select Your Item</h2>
+                    
+                    <div class="mb-6">
+                        <label class="block text-purple-800 font-medium mb-2">Clothing Category</label>
+                        <div class="flex flex-wrap gap-2 mb-4">
+                            <button class="category-tab active px-4 py-2 rounded-lg bg-indigo-100 text-indigo-800 text-sm font-medium" data-category="tops">Tops</button>
+                            <button class="category-tab px-4 py-2 rounded-lg bg-purple-100 text-purple-800 text-sm font-medium" data-category="bottoms">Bottoms</button>
+                            <button class="category-tab px-4 py-2 rounded-lg bg-indigo-100 text-indigo-800 text-sm font-medium" data-category="dresses">Dresses</button>
+                            <button class="category-tab px-4 py-2 rounded-lg bg-purple-100 text-purple-800 text-sm font-medium" data-category="outerwear">Outerwear</button>
+                            <button class="category-tab px-4 py-2 rounded-lg bg-indigo-100 text-indigo-800 text-sm font-medium" data-category="shoes">Shoes</button>
+                        </div>
+                        
+                        <label class="block text-purple-800 font-medium mb-2">Clothing Type</label>
+                        <select id="clothing-type" class="w-full p-3 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
+                            <!-- Options will be loaded by JavaScript -->
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-purple-800 font-medium mb-2">Occasion</label>
+                        <select id="occasion" class="w-full p-3 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
+                            <option value="casual">Casual</option>
+                            <option value="work">Work</option>
+                            <option value="date">Date Night</option>
+                            <option value="formal">Formal Event</option>
+                            <option value="weekend">Weekend</option>
+                        </select>
+                    </div>
+                    
+                    <div class="mb-6">
+                        <label class="block text-purple-800 font-medium mb-2">Season</label>
+                        <select id="season" class="w-full p-3 border border-indigo-300 rounded-lg focus:ring-2 focus:ring-purple-500 focus:border-purple-500 bg-white">
+                            <option value="spring">Spring</option>
+                            <option value="summer">Summer</option>
+                            <option value="fall">Fall</option>
+                            <option value="winter">Winter</option>
+                        </select>
+                    </div>
+                    
+                    <button id="generate-btn" class="gradient-button w-full py-3 px-6 text-white font-medium rounded-lg shadow-md">
+                        Generate Outfit Ideas
+                    </button>
+                </div>
+                
+                <div class="w-full md:w-2/3">
+                    <div id="loading" class="hidden flex-col items-center justify-center h-full">
+                        <div class="w-16 h-16 border-4 border-purple-500 border-t-transparent rounded-full animate-spin mb-4"></div>
+                        <p class="text-indigo-800 font-medium">Creating your perfect outfits...</p>
+                    </div>
+                    
+                    <div id="results" class="hidden">
+                        <h2 class="text-2xl font-semibold text-indigo-900 mb-6">Your Style Options</h2>
+                        <div id="outfits-container" class="grid grid-cols-1 md:grid-cols-2 gap-6"></div>
+                    </div>
+                    
+                    <div id="initial-state" class="flex flex-col items-center justify-center h-full py-10">
+                        <div class="w-40 h-40 mb-6">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="url(#gradient)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="w-full h-full">
+                                <defs>
+                                    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                                        <stop offset="0%" stop-color="#4f46e5" />
+                                        <stop offset="100%" stop-color="#9333ea" />
+                                    </linearGradient>
+                                </defs>
+                                <path d="M20.38 3.46L16 2a4 4 0 01-8 0L3.62 3.46a2 2 0 00-1.34 2.23l.58 3.47a1 1 0 00.99.84H6v10c0 1.1.9 2 2 2h8a2 2 0 002-2V10h2.15a1 1 0 00.99-.84l.58-3.47a2 2 0 00-1.34-2.23z"></path>
+                            </svg>
+                        </div>
+                        <p class="text-indigo-800 text-center max-w-md">Select your clothing item and preferences, then click "Generate Outfit Ideas" to see different styling options.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="saved-outfits" class="hidden">
+            <div class="flex justify-between items-center mb-6">
+                <h2 class="text-2xl font-semibold text-indigo-900">Saved Outfit Ideas</h2>
+                <button id="clear-saved" class="px-4 py-2 bg-purple-100 hover:bg-purple-200 text-purple-800 rounded-lg transition-colors text-sm font-medium">
+                    Clear All
+                </button>
+            </div>
+            <div id="saved-outfits-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+        </div>
+    </div>
+
+    <script>
+        // Clothing data organized by categories
+        const clothingCategories = {
+            tops: [
+                "white-button-up", "white-tee", "black-turtleneck", "striped-shirt", 
+                "blue-oxford", "floral-blouse", "graphic-tee", "silk-camisole", 
+                "polo-shirt", "chambray-shirt", "henley-shirt", "crop-top"
+            ],
+            bottoms: [
+                "blue-jeans", "black-pants", "khaki-chinos", "leather-pants", 
+                "pleated-skirt", "denim-shorts", "linen-pants", "pencil-skirt", 
+                "wide-leg-pants", "cargo-pants", "corduroy-pants", "midi-skirt"
+            ],
+            dresses: [
+                "black-dress", "maxi-dress", "slip-dress", "shirt-dress", 
+                "wrap-dress", "sweater-dress", "sundress", "cocktail-dress", 
+                "denim-dress", "bodycon-dress", "a-line-dress", "floral-dress"
+            ],
+            outerwear: [
+                "navy-blazer", "leather-jacket", "denim-jacket", "trench-coat", 
+                "puffer-jacket", "cardigan", "bomber-jacket", "wool-coat", 
+                "utility-jacket", "peacoat", "shearling-jacket", "raincoat"
+            ],
+            shoes: [
+                "white-sneakers", "black-boots", "loafers", "strappy-heels", 
+                "ballet-flats", "sandals", "chelsea-boots", "oxford-shoes", 
+                "espadrilles", "mules", "combat-boots", "ankle-boots"
+            ]
+        };
+
+        // Clothing names for display
+        const clothingNames = {
+            "white-button-up": "White Button-Up Shirt",
+            "white-tee": "White T-shirt",
+            "black-turtleneck": "Black Turtleneck",
+            "striped-shirt": "Striped Shirt",
+            "blue-oxford": "Blue Oxford Shirt",
+            "floral-blouse": "Floral Blouse",
+            "graphic-tee": "Graphic T-shirt",
+            "silk-camisole": "Silk Camisole",
+            "polo-shirt": "Polo Shirt",
+            "chambray-shirt": "Chambray Shirt",
+            "henley-shirt": "Henley Shirt",
+            "crop-top": "Crop Top",
+            
+            "blue-jeans": "Blue Jeans",
+            "black-pants": "Black Pants",
+            "khaki-chinos": "Khaki Chinos",
+            "leather-pants": "Leather Pants",
+            "pleated-skirt": "Pleated Skirt",
+            "denim-shorts": "Denim Shorts",
+            "linen-pants": "Linen Pants",
+            "pencil-skirt": "Pencil Skirt",
+            "wide-leg-pants": "Wide-Leg Pants",
+            "cargo-pants": "Cargo Pants",
+            "corduroy-pants": "Corduroy Pants",
+            "midi-skirt": "Midi Skirt",
+            
+            "black-dress": "Little Black Dress",
+            "maxi-dress": "Maxi Dress",
+            "slip-dress": "Slip Dress",
+            "shirt-dress": "Shirt Dress",
+            "wrap-dress": "Wrap Dress",
+            "sweater-dress": "Sweater Dress",
+            "sundress": "Sundress",
+            "cocktail-dress": "Cocktail Dress",
+            "denim-dress": "Denim Dress",
+            "bodycon-dress": "Bodycon Dress",
+            "a-line-dress": "A-Line Dress",
+            "floral-dress": "Floral Dress",
+            
+            "navy-blazer": "Navy Blazer",
+            "leather-jacket": "Leather Jacket",
+            "denim-jacket": "Denim Jacket",
+            "trench-coat": "Trench Coat",
+            "puffer-jacket": "Puffer Jacket",
+            "cardigan": "Cardigan",
+            "bomber-jacket": "Bomber Jacket",
+            "wool-coat": "Wool Coat",
+            "utility-jacket": "Utility Jacket",
+            "peacoat": "Peacoat",
+            "shearling-jacket": "Shearling Jacket",
+            "raincoat": "Raincoat",
+            
+            "white-sneakers": "White Sneakers",
+            "black-boots": "Black Boots",
+            "loafers": "Loafers",
+            "strappy-heels": "Strappy Heels",
+            "ballet-flats": "Ballet Flats",
+            "sandals": "Sandals",
+            "chelsea-boots": "Chelsea Boots",
+            "oxford-shoes": "Oxford Shoes",
+            "espadrilles": "Espadrilles",
+            "mules": "Mules",
+            "combat-boots": "Combat Boots",
+            "ankle-boots": "Ankle Boots"
+        };
+
+        // Expanded clothing data with styling suggestions
+        const clothingData = {
+            // TOPS
+            "white-button-up": {
+                name: "White Button-Up Shirt",
+                casual: {
+                    spring: [
+                        { title: "Weekend Casual", description: "Untucked with rolled sleeves, light wash jeans, and white sneakers. Add a colorful watch for a pop of spring color." },
+                        { title: "Brunch Ready", description: "Half-tucked into high-waisted light blue jeans, with loafers and delicate jewelry. Top with a light cardigan if needed." }
+                    ],
+                    summer: [
+                        { title: "Beach Day", description: "Unbuttoned over a tank top, with linen shorts and sandals. Add a straw hat for sun protection." },
+                        { title: "Summer Evening", description: "Sleeves rolled up, front tied in a knot, paired with white shorts and espadrilles. Add minimal gold jewelry." }
+                    ],
+                    fall: [
+                        { title: "Apple Picking", description: "Layered under a chunky knit sweater with just the collar and cuffs showing, with jeans and ankle boots." },
+                        { title: "Coffee Run", description: "Buttoned up with a puffer vest over top, dark jeans, and casual sneakers. Add a beanie for extra warmth." }
+                    ],
+                    winter: [
+                        { title: "Cozy Indoors", description: "Layered under a crew neck sweater, with comfortable jeans and wool socks. Perfect for a day at home." },
+                        { title: "Weekend Errands", description: "Under a shearling jacket with thermal leggings and snow boots. Add a colorful scarf for personality." }
+                    ]
+                },
+                work: {
+                    spring: [
+                        { title: "Classic Office", description: "Tucked into tailored trousers with a slim belt and loafers. Add a light blazer for meetings." },
+                        { title: "Creative Workplace", description: "French tucked into wide-leg pants with a statement belt and mules. Layer with a colorful cardigan." }
+                    ],
+                    summer: [
+                        { title: "Summer Professional", description: "Tucked into a knee-length skirt with a thin belt and slingback heels. Keep jewelry minimal in the heat." },
+                        { title: "Business Casual", description: "Tucked into cropped trousers with loafers and a watch. Roll sleeves neatly to the elbow for comfort." }
+                    ],
+                    fall: [
+                        { title: "Autumn Office", description: "Layered under a knit vest, with wool trousers and oxford shoes. Add a trench coat for the commute." },
+                        { title: "Client Meeting", description: "Fully buttoned with a tweed blazer, matching trousers, and leather shoes. Add a pocket square for flair." }
+                    ],
+                    winter: [
+                        { title: "Winter Professional", description: "Layered under a turtleneck sweater with just the collar visible, with wool trousers and boots." },
+                        { title: "Executive Style", description: "Crisp and pressed under a full suit with a tie and polished shoes. Add a wool overcoat for outdoors." }
+                    ]
+                },
+                date: {
+                    spring: [
+                        { title: "Casual Date", description: "Two buttons open at the top, sleeves rolled, tucked into dark jeans with a nice belt and desert boots." },
+                        { title: "Dinner Date", description: "Buttoned up with a lightweight blazer, chinos, and loafers without socks. Add a subtle cologne." }
+                    ],
+                    summer: [
+                        { title: "Rooftop Drinks", description: "Two buttons open, untucked over slim chinos with leather sandals. Add a minimal bracelet or watch." },
+                        { title: "Sunset Walk", description: "Sleeves rolled up, paired with tailored shorts and boat shoes. Keep it simple and fresh." }
+                    ],
+                    fall: [
+                        { title: "Movie Night", description: "Under a lightweight sweater with dark jeans and Chelsea boots. The collar should peek out nicely." },
+                        { title: "Wine Tasting", description: "Tucked into chinos with a suede jacket and desert boots. Add a simple leather bracelet." }
+                    ],
+                    winter: [
+                        { title: "Cozy Dinner", description: "Layered under a cashmere sweater with dark jeans and Chelsea boots. Add a wool peacoat for the journey." },
+                        { title: "Evening Out", description: "Fully buttoned with a tie under a V-neck sweater, with wool trousers and polished shoes." }
+                    ]
+                },
+                formal: {
+                    spring: [
+                        { title: "Spring Wedding", description: "Crisp and pressed with a light-colored suit, patterned tie, and polished oxfords. Add a pocket square." },
+                        { title: "Graduation", description: "Perfectly ironed with a tie, under graduation robes. Pair with dress pants and formal shoes." }
+                    ],
+                    summer: [
+                        { title: "Summer Gala", description: "With mother-of-pearl buttons and cufflinks, paired with a light linen suit and formal loafers." },
+                        { title: "Beach Wedding", description: "Lightweight and breathable, paired with light-colored suit pants, no tie, and loafers without socks." }
+                    ],
+                    fall: [
+                        { title: "Autumn Ceremony", description: "With a tie and waistcoat, under a three-piece suit in fall tones. Add polished brogues." },
+                        { title: "Formal Dinner", description: "With a bow tie and suspenders, paired with tuxedo pants and patent leather shoes." }
+                    ],
+                    winter: [
+                        { title: "Winter Ball", description: "With a wing collar and bow tie, under a full tuxedo with patent leather shoes and cufflinks." },
+                        { title: "Holiday Party", description: "With a festive tie, under a velvet blazer with wool trousers and polished shoes." }
+                    ]
+                },
+                weekend: {
+                    spring: [
+                        { title: "Farmers Market", description: "Sleeves rolled up, half-tucked into boyfriend jeans with comfortable sneakers and a crossbody bag." },
+                        { title: "Park Picnic", description: "Knotted at the waist over a tank top, with high-waisted shorts and sandals. Add a sun hat." }
+                    ],
+                    summer: [
+                        { title: "Beach Cover-up", description: "Oversized and unbuttoned over a swimsuit, with shorts and flip-flops. Perfect for beach to bar." },
+                        { title: "Festival Style", description: "Tied at the waist with high-waisted shorts, ankle boots, and layered necklaces." }
+                    ],
+                    fall: [
+                        { title: "Pumpkin Patch", description: "Under a flannel shirt (open), with jeans and boots. Add a beanie for extra fall vibes." },
+                        { title: "Weekend Brunch", description: "Layered under a denim jacket with leggings and ankle boots. Add a colorful scarf." }
+                    ],
+                    winter: [
+                        { title: "Cabin Getaway", description: "Layered under a chunky cardigan with leggings and fuzzy socks. Perfect for a cozy weekend away." },
+                        { title: "Holiday Shopping", description: "Under a festive sweater with jeans and comfortable boots. Add a crossbody bag for hands-free shopping." }
+                    ]
+                }
+            },
+            "black-turtleneck": {
+                name: "Black Turtleneck",
+                casual: {
+                    spring: [
+                        { title: "Cool Spring Day", description: "With high-waisted light wash jeans, white sneakers, and minimal gold jewelry. Perfect for transitional weather." },
+                        { title: "Weekend Coffee", description: "With a midi skirt, ankle boots, and a crossbody bag. Add a denim jacket for cooler mornings." }
+                    ],
+                    summer: [
+                        { title: "Summer Evening", description: "With white linen shorts, sandals, and statement earrings. Lightweight turtleneck for cooler summer nights." },
+                        { title: "Coastal Dinner", description: "With wide-leg cropped pants, espadrilles, and delicate jewelry. Elegant yet casual for seaside dining." }
+                    ],
+                    fall: [
+                        { title: "Apple Orchard", description: "With a plaid mini skirt, tights, and ankle boots. Add a leather jacket for a classic fall look." },
+                        { title: "Coffee Shop Work", description: "With high-waisted jeans, loafers, and layered gold necklaces. Simple, chic, and comfortable." }
+                    ],
+                    winter: [
+                        { title: "Weekend Casual", description: "With straight-leg jeans, Chelsea boots, and a long wool coat. Classic winter uniform." },
+                        { title: "Cozy Day", description: "With leggings, oversized cardigan, and fuzzy socks. Perfect for a day at home or casual errands." }
+                    ]
+                },
+                work: {
+                    spring: [
+                        { title: "Office Chic", description: "With a plaid blazer, tailored trousers, and loafers. Professional with a touch of pattern." },
+                        { title: "Creative Meeting", description: "With a midi skirt, mules, and statement earrings. Artistic yet professional." }
+                    ],
+                    summer: [
+                        { title: "Summer AC", description: "With wide-leg linen pants, pointed flats, and minimal jewelry. Perfect for over-air-conditioned offices." },
+                        { title: "Business Lunch", description: "With a lightweight pencil skirt, slingback heels, and a structured bag. Elegant summer professional." }
+                    ],
+                    fall: [
+                        { title: "Fall Presentation", description: "Under a camel blazer with matching trousers and loafers. Polished and seasonal." },
+                        { title: "Office to Dinner", description: "With a leather pencil skirt, heeled boots, and gold accessories. Easy day-to-night transition." }
+                    ],
+                    winter: [
+                        { title: "Winter Professional", description: "With wide-leg wool pants, ankle boots, and a long coat. Sophisticated cold-weather dressing." },
+                        { title: "Executive Meeting", description: "Under a tweed suit with heeled boots and pearl earrings. Classic power dressing." }
+                    ]
+                },
+                date: {
+                    spring: [
+                        { title: "Gallery Opening", description: "With leather pants, pointed mules, and statement earrings. Artistic and sophisticated." },
+                        { title: "Wine Bar", description: "With a midi skirt, strappy sandals, and layered necklaces. Elegant yet approachable." }
+                    ],
+                    summer: [
+                        { title: "Rooftop Dinner", description: "With white jeans, heeled sandals, and gold accessories. Chic for cooler summer evenings." },
+                        { title: "Theater Night", description: "With a flowy maxi skirt, sandals, and statement earrings. Dramatic yet comfortable." }
+                    ],
+                    fall: [
+                        { title: "Dinner Date", description: "With a leather mini skirt, tights, and ankle boots. Add a red lip for classic appeal." },
+                        { title: "Cocktail Bar", description: "With dark jeans, heeled boots, and layered gold jewelry. Effortlessly chic." }
+                    ],
+                    winter: [
+                        { title: "Cozy Restaurant", description: "With a velvet midi skirt, tights, and heeled boots. Rich textures for winter romance." },
+                        { title: "Evening Out", description: "With leather pants, pointed boots, and statement earrings. Sleek and sophisticated." }
+                    ]
+                },
+                formal: {
+                    spring: [
+                        { title: "Spring Gala", description: "With a metallic pleated maxi skirt, strappy heels, and statement jewelry. Modern formal approach." },
+                        { title: "Cocktail Event", description: "With wide-leg satin pants, pointed heels, and minimal jewelry. Elegant alternative to a dress." }
+                    ],
+                    summer: [
+                        { title: "Summer Soirée", description: "With a light-colored silk maxi skirt, metallic sandals, and crystal earrings. Elegant warm-weather formal." },
+                        { title: "Evening Wedding", description: "With palazzo pants, heeled sandals, and a clutch. Sophisticated alternative to traditional formalwear." }
+                    ],
+                    fall: [
+                        { title: "Autumn Gala", description: "With a velvet maxi skirt, pointed heels, and statement earrings. Rich textures for fall formality." },
+                        { title: "Black Tie Optional", description: "With a sequin midi skirt, heels, and minimal jewelry. Modern take on evening wear." }
+                    ],
+                    winter: [
+                        { title: "Winter Ball", description: "With a full satin skirt, heels, and diamond accessories. Classic and timeless approach." },
+                        { title: "New Year's Eve", description: "With sequin pants, heels, and statement jewelry. Festive and sophisticated." }
+                    ]
+                },
+                weekend: {
+                    spring: [
+                        { title: "Museum Day", description: "With straight-leg jeans, white sneakers, and a trench coat. Classic art-viewing outfit." },
+                        { title: "Farmers Market", description: "With a denim skirt, ankle boots, and a crossbody bag. Practical yet put-together." }
+                    ],
+                    summer: [
+                        { title: "Cool Summer Night", description: "With linen shorts, sandals, and minimal jewelry. Perfect for evening walks or outdoor dining." },
+                        { title: "Lakeside Weekend", description: "With white jeans, boat shoes, and a straw hat. Nautical-inspired casual." }
+                    ],
+                    fall: [
+                        { title: "Pumpkin Patch", description: "With corduroy pants, ankle boots, and a utility jacket. Quintessential fall outing attire." },
+                        { title: "Weekend Shopping", description: "With jeans, sneakers, and a leather jacket. Comfortable yet stylish for a day out." }
+                    ],
+                    winter: [
+                        { title: "Cabin Weekend", description: "With leggings, snow boots, and an oversized cardigan. Cozy mountain retreat style." },
+                        { title: "Holiday Market", description: "With jeans, boots, and a puffer coat. Practical for outdoor winter activities." }
+                    ]
+                }
+            },
+            "blue-jeans": {
+                name: "Blue Jeans",
+                casual: {
+                    spring: [
+                        { title: "Weekend Ready", description: "With a striped tee, light sneakers, and a denim jacket. Roll the cuffs for a fresh spring look." },
+                        { title: "Park Day", description: "With a floral blouse, white sneakers, and a crossbody bag. Add a light cardigan for cooler mornings." }
+                    ],
+                    summer: [
+                        { title: "Beach Trip", description: "With a tank top, flip flops, and a baseball cap. Roll up the legs for a cropped look." },
+                        { title: "Summer Evening", description: "With a lightweight off-shoulder top, sandals, and minimal jewelry. Perfect for outdoor dining." }
+                    ],
+                    fall: [
+                        { title: "Apple Orchard", description: "With a flannel shirt, ankle boots, and a beanie. Add a vest for extra warmth if needed." },
+                        { title: "Coffee Run", description: "With an oversized sweater, sneakers, and a messy bun. Comfortable yet put-together." }
+                    ],
+                    winter: [
+                        { title: "Snow Day", description: "With a thermal top, chunky sweater, and snow boots. Add a puffer coat and beanie for maximum warmth." },
+                        { title: "Cabin Cozy", description: "With a turtleneck, thick socks, and slippers. Perfect for a weekend getaway in the mountains." }
+                    ]
+                },
+                work: {
+                    spring: [
+                        { title: "Casual Friday", description: "With a crisp button-up, loafers, and a blazer. Make sure the jeans are dark wash and free of distressing." },
+                        { title: "Creative Office", description: "With a silk blouse, block heels, and statement earrings. Add a colorful blazer for meetings." }
+                    ],
+                    summer: [
+                        { title: "Summer Office", description: "With a lightweight blouse, pointed flats, and minimal jewelry. Keep the look breathable but professional." },
+                        { title: "Business Casual", description: "With a short-sleeve button-up, loafers, and a watch. Roll the jeans neatly at the ankle." }
+                    ],
+                    fall: [
+                        { title: "Fall Professional", description: "With a turtleneck, blazer, and ankle boots. Choose dark wash jeans with no distressing." },
+                        { title: "Office to Happy Hour", description: "With a blouse, cardigan, and block heels. Add bold earrings for the transition to evening." }
+                    ],
+                    winter: [
+                        { title: "Winter Workday", description: "With a sweater, blazer, and knee-high boots. Make sure the jeans are tucked in neatly." },
+                        { title: "Professional Warmth", description: "With a button-up, sweater vest, and ankle boots. Add a wool coat for the commute." }
+                    ]
+                },
+                date: {
+                    spring: [
+                        { title: "Dinner Date", description: "With a silky camisole, strappy heels, and delicate jewelry. Add a leather jacket for edge." },
+                        { title: "Movie Night", description: "With a cute top, comfortable flats, and a crossbody bag. Casual but still date-worthy." }
+                    ],
+                    summer: [
+                        { title: "Rooftop Drinks", description: "With an off-shoulder top, wedge sandals, and statement earrings. Hair up to beat the heat." },
+                        { title: "Outdoor Concert", description: "With a band tee, cool sneakers, and layered necklaces. Add a light jacket for evening." }
+                    ],
+                    fall: [
+                        { title: "Winery Tour", description: "With a fitted sweater, ankle boots, and a felt hat. Sophisticated yet comfortable." },
+                        { title: "Dinner and Theater", description: "With a silky blouse, heeled boots, and a clutch. Add a tailored coat for elegance." }
+                    ],
+                    winter: [
+                        { title: "Cozy Dinner", description: "With a cashmere sweater, heeled boots, and statement earrings. Add a wool coat for warmth." },
+                        { title: "Ice Skating Date", description: "With a fitted turtleneck, puffer jacket, and warm boots. Practical but still cute." }
+                    ]
+                },
+                formal: {
+                    spring: [
+                        { title: "Smart Casual Event", description: "With a blazer, silk shell top, and heeled sandals. Choose dark, pristine jeans with no distressing." },
+                        { title: "Gallery Opening", description: "With a statement blouse, pointed heels, and artistic jewelry. Add a clutch for essentials." }
+                    ],
+                    summer: [
+                        { title: "Outdoor Wedding", description: "With a dressy top, strappy heels, and a small clutch. Only for dress-code appropriate weddings!" },
+                        { title: "Summer Cocktails", description: "With a silk camisole, blazer, and heeled sandals. Add a statement necklace for glamour." }
+                    ],
+                    fall: [
+                        { title: "Upscale Dinner", description: "With a sequin top, velvet blazer, and heeled boots. Dark wash jeans elevate the look." },
+                        { title: "Theater Night", description: "With a silk blouse, tailored blazer, and pumps. Add a brooch for vintage elegance." }
+                    ],
+                    winter: [
+                        { title: "Holiday Party", description: "With a velvet blazer, silk camisole, and heeled boots. Add statement jewelry for festive flair." },
+                        { title: "New Year's Eve", description: "With a sequin top, blazer, and pointed heels. Only for casual-acceptable NYE events." }
+                    ]
+                },
+                weekend: {
+                    spring: [
+                        { title: "Farmers Market", description: "With a striped tee, canvas sneakers, and a tote bag. Roll the cuffs for a casual touch." },
+                        { title: "Picnic in the Park", description: "With a gingham top, sandals, and a sun hat. Comfortable for sitting on a blanket." }
+                    ],
+                    summer: [
+                        { title: "Backyard BBQ", description: "With a graphic tee, comfortable sandals, and sunglasses. Casual and ready for fun." },
+                        { title: "Tourist Day", description: "With a comfortable tank, sneakers, and a crossbody bag. Practical for walking all day." }
+                    ],
+                    fall: [
+                        { title: "Pumpkin Patch", description: "With a cozy sweater, boots, and a beanie. Perfect for those Instagram-worthy fall photos." },
+                        { title: "Weekend Brunch", description: "With a chunky knit, ankle boots, and a crossbody bag. Comfortable yet put-together." }
+                    ],
+                    winter: [
+                        { title: "Holiday Shopping", description: "With a sweater, puffer vest, and comfortable boots. Practical for a day of shopping." },
+                        { title: "Game Day", description: "With a team sweatshirt, sneakers, and a beanie in team colors. Comfortable for cheering." }
+                    ]
+                }
+            },
+            "black-dress": {
+                name: "Little Black Dress",
+                casual: {
+                    spring: [
+                        { title: "Day to Night", description: "Paired with a denim jacket, white sneakers, and a crossbody bag. Add a colorful scarf for daytime." },
+                        { title: "Weekend Casual", description: "Layered over a white t-shirt with flat sandals and minimal jewelry for a relaxed look." }
+                    ],
+                    summer: [
+                        { title: "Beach to Bar", description: "With flat sandals, a straw hat, and oversized sunglasses. Add a light kimono for sun protection." },
+                        { title: "Summer Evening", description: "With espadrilles, a straw clutch, and delicate gold jewelry. Hair in a messy bun for effortless style." }
+                    ],
+                    fall: [
+                        { title: "Coffee Date", description: "With a chunky cardigan, tights, and ankle boots. Add a long pendant necklace to complete the look." },
+                        { title: "Museum Day", description: "Layered under an oversized sweater so it looks like a skirt, with knee-high boots and a beret." }
+                    ],
+                    winter: [
+                        { title: "Cozy Casual", description: "Layered over a turtleneck with thick tights, combat boots, and a beanie. Add a puffer jacket for outdoors." },
+                        { title: "Weekend Warmth", description: "With a chunky sweater over top, leggings underneath, and snow boots. Add a colorful scarf." }
+                    ]
+                },
+                work: {
+                    spring: [
+                        { title: "Office Ready", description: "With a tailored blazer, nude pumps, and a structured tote. Keep jewelry minimal and professional." },
+                        { title: "Creative Professional", description: "With a colorful blazer, statement necklace, and block heels. Add a printed scarf for personality." }
+                    ],
+                    summer: [
+                        { title: "Summer Office", description: "With a light cardigan, slingback heels, and a sleek watch. Keep the look breathable but professional." },
+                        { title: "Business Lunch", description: "With a cropped blazer, pointed flats, and a leather portfolio. Hair pulled back for a polished look." }
+                    ],
+                    fall: [
+                        { title: "Fall Meetings", description: "With a trench coat, tights, and pumps. Add a silk scarf tied at the neck for sophistication." },
+                        { title: "Professional Autumn", description: "With a long cardigan, opaque tights, and heeled ankle boots. Add pearl earrings for elegance." }
+                    ],
+                    winter: [
+                        { title: "Winter Office", description: "With a long wool coat, thick tights, and knee-high boots. Add a cashmere scarf for warmth." },
+                        { title: "Executive Style", description: "With a fitted blazer, opaque tights, and block heel pumps. Add a brooch for a touch of personality." }
+                    ]
+                },
+                date: {
+                    spring: [
+                        { title: "Dinner Date", description: "With strappy heels, delicate jewelry, and a small clutch. Hair down and flowing for a romantic look." },
+                        { title: "Rooftop Drinks", description: "With a leather jacket, statement earrings, and ankle strap heels. Add a bold lip color." }
+                    ],
+                    summer: [
+                        { title: "Sunset Cocktails", description: "With barely-there sandals, minimal jewelry, and a small clutch. Keep makeup fresh and glowing." },
+                        { title: "Outdoor Concert", description: "With comfortable wedges, a crossbody bag, and stackable bracelets. Add a light wrap for evening." }
+                    ],
+                    fall: [
+                        { title: "Wine Tasting", description: "With a moto jacket, tights, and heeled booties. Add a statement necklace to elevate the look." },
+                        { title: "Theater Night", description: "With a velvet blazer, sheer tights, and classic pumps. Add a cocktail ring for drama." }
+                    ],
+                    winter: [
+                        { title: "Cozy Dinner", description: "With a faux fur coat, thick tights, and heeled boots. Add statement earrings for glamour." },
+                        { title: "Cocktail Hour", description: "With a sequin cardigan, sheer black tights, and pointed heels. Add a red lip for classic appeal." }
+                    ]
+                },
+                formal: {
+                    spring: [
+                        { title: "Spring Gala", description: "With crystal-embellished heels, a beaded clutch, and statement earrings. Add a pashmina for cooler evenings." },
+                        { title: "Wedding Guest", description: "With metallic heels, a structured clutch, and a fascinator. Add a light wrap for the ceremony." }
+                    ],
+                    summer: [
+                        { title: "Summer Soirée", description: "With strappy metallic sandals, a crystal clutch, and diamond studs. Hair up to beat the heat." },
+                        { title: "Evening Wedding", description: "With satin heels, a jeweled clutch, and a statement bracelet. Add a light silk wrap." }
+                    ],
+                    fall: [
+                        { title: "Autumn Ball", description: "With velvet pumps, a beaded clutch, and chandelier earrings. Add a velvet wrap for sophistication." },
+                        { title: "Black Tie Optional", description: "With satin heels, a metallic clutch, and a diamond tennis bracelet. Add a brooch for extra glamour." }
+                    ],
+                    winter: [
+                        { title: "Winter Gala", description: "With crystal-embellished pumps, a fur stole, and diamond jewelry. The ultimate elegant winter look." },
+                        { title: "New Year's Eve", description: "With glitter heels, a sequin clutch, and statement jewelry. Add a metallic eye for festive glamour." }
+                    ]
+                },
+                weekend: {
+                    spring: [
+                        { title: "Brunch Style", description: "With a denim jacket, white sneakers, and a crossbody bag. Hair in a casual ponytail for effortless style." },
+                        { title: "Shopping Day", description: "With a long cardigan, comfortable flats, and a tote bag. Add a baseball cap for casual cool." }
+                    ],
+                    summer: [
+                        { title: "Farmers Market", description: "With flat sandals, a wide-brim hat, and a market tote. Keep the look easy and comfortable." },
+                        { title: "Backyard BBQ", description: "With white sneakers, a tied button-up shirt over top, and minimal jewelry. Casual but put-together." }
+                    ],
+                    fall: [
+                        { title: "Apple Picking", description: "With a flannel shirt tied around the waist, ankle boots, and a crossbody bag. Add a beanie for fall vibes." },
+                        { title: "Weekend Getaway", description: "With a chunky sweater over top, leggings underneath, and comfortable boots. Cozy yet stylish." }
+                    ],
+                    winter: [
+                        { title: "Holiday Shopping", description: "Layered over a turtleneck with thick leggings, snow boots, and a puffer coat. Practical yet cute." },
+                        { title: "Casual Gathering", description: "With an oversized sweater, thick tights, and ankle boots. Add a beanie and scarf for extra warmth." }
+                    ]
+                }
+            },
+            "navy-blazer": {
+                name: "Navy Blazer",
+                casual: {
+                    spring: [
+                        { title: "Weekend Polish", description: "Over a striped tee with chinos and white sneakers. Roll the sleeves for a relaxed vibe." },
+                        { title: "Brunch Ready", description: "Over a light sweater with jeans and loafers. Add sunglasses for a touch of cool." }
+                    ],
+                    summer: [
+                        { title: "Evening Stroll", description: "Over a plain tee with shorts and boat shoes. Keep it light and breezy." },
+                        { title: "Casual Dinner", description: "Over a polo shirt with chinos and driving loafers. Perfect for outdoor dining." }
+                    ],
+                    fall: [
+                        { title: "Coffee Date", description: "Over a thin turtleneck with jeans and Chelsea boots. Add a scarf for extra fall style." },
+                        { title: "Weekend Errands", description: "Over a hoodie with joggers and clean sneakers. High-low styling at its best." }
+                    ],
+                    winter: [
+                        { title: "Casual Gathering", description: "Over a chunky sweater with corduroy pants and desert boots. Warm yet stylish." },
+                        { title: "Movie Night", description: "Over a sweatshirt with jeans and comfortable shoes. Elevates a simple outfit." }
+                    ]
+                },
+                work: {
+                    spring: [
+                        { title: "Classic Office", description: "With a light blue button-up, navy trousers, and brown oxfords. Timeless professional style." },
+                        { title: "Business Casual", description: "With a gingham shirt, khaki chinos, and loafers. Perfect balance of professional and approachable." }
+                    ],
+                    summer: [
+                        { title: "Summer Meetings", description: "With a crisp white shirt, light gray trousers, and loafers without socks. Seasonal yet professional." },
+                        { title: "Office to Dinner", description: "With a light blue shirt, navy chinos, and brown brogues. Versatile for day to evening." }
+                    ],
+                    fall: [
+                        { title: "Fall Professional", description: "With a burgundy sweater, gray trousers, and brown wingtips. Seasonal colors complement the navy." },
+                        { title: "Client Presentation", description: "With a white shirt, tie, gray trousers, and black oxfords. Classic and authoritative." }
+                    ],
+                    winter: [
+                        { title: "Winter Office", description: "With a turtleneck sweater, wool trousers, and Chelsea boots. Warm yet professional." },
+                        { title: "Executive Style", description: "With a white shirt, knit tie, flannel trousers, and brogues. Traditional with seasonal texture." }
+                    ]
+                },
+                date: {
+                    spring: [
+                        { title: "Dinner Date", description: "Over a light sweater with chinos and loafers. Add a pocket square for a touch of personality." },
+                        { title: "Gallery Opening", description: "With a patterned shirt, dark jeans, and Chelsea boots. Artistic yet put-together." }
+                    ],
+                    summer: [
+                        { title: "Rooftop Drinks", description: "Over a linen shirt with light chinos and loafers. Keep it breathable and elegant." },
+                        { title: "Outdoor Concert", description: "Over a graphic tee with chinos and clean sneakers. Cool yet elevated." }
+                    ],
+                    fall: [
+                        { title: "Wine Tasting", description: "With a thin turtleneck, dark jeans, and Chelsea boots. Sophisticated without being stuffy." },
+                        { title: "Theater Night", description: "With a dress shirt, wool trousers, and oxfords. Classic date night attire." }
+                    ],
+                    winter: [
+                        { title: "Cozy Dinner", description: "Over a cashmere sweater with wool trousers and brogues. Elegant and warm." },
+                        { title: "Cocktail Bar", description: "With a dark shirt, dark jeans, and Chelsea boots. Add a watch for subtle sophistication." }
+                    ]
+                },
+                formal: {
+                    spring: [
+                        { title: "Spring Wedding", description: "With a light-colored shirt, floral tie, matching trousers, and brown oxfords. Add a pocket square." },
+                        { title: "Graduation", description: "With a white shirt, subtle tie, matching trousers, and black shoes. Traditional and appropriate." }
+                    ],
+                    summer: [
+                        { title: "Summer Gala", description: "With a white shirt, bow tie, matching trousers, and patent leather shoes. Classic black tie optional." },
+                        { title: "Beach Wedding", description: "With a light blue shirt, no tie, matching trousers, and loafers. Formal yet appropriate for the setting." }
+                    ],
+                    fall: [
+                        { title: "Autumn Ceremony", description: "With a white shirt, seasonal tie, matching trousers, and polished shoes. Add a coordinating pocket square." },
+                        { title: "Formal Dinner", description: "With a white shirt, dark tie, matching trousers, and black oxfords. Timeless evening attire." }
+                    ],
+                    winter: [
+                        { title: "Winter Ball", description: "With a white shirt, black bow tie, matching trousers, and patent leather shoes. Classic black tie." },
+                        { title: "Holiday Party", description: "With a festive shirt, dark tie, matching trousers, and polished shoes. Seasonal yet sophisticated." }
+                    ]
+                },
+                weekend: {
+                    spring: [
+                        { title: "Casual Brunch", description: "Over a Henley shirt with jeans and desert boots. Relaxed yet put-together." },
+                        { title: "Shopping Trip", description: "Over a striped tee with chinos and sneakers. Comfortable yet stylish." }
+                    ],
+                    summer: [
+                        { title: "Farmers Market", description: "Over a plain tee with shorts and espadrilles. Light and casual for warm days." },
+                        { title: "Weekend Getaway", description: "Over a linen shirt with chinos and driving loafers. Versatile for various activities." }
+                    ],
+                    fall: [
+                        { title: "Apple Picking", description: "Over a plaid shirt with jeans and boots. Seasonal and practical." },
+                        { title: "Sunday Drive", description: "Over a light sweater with chinos and loafers. Classic weekend style." }
+                    ],
+                    winter: [
+                        { title: "Casual Gathering", description: "Over a hoodie with jeans and boots. Unexpected high-low combination." },
+                        { title: "Weekend Lunch", description: "Over a sweater with corduroy pants and desert boots. Textured winter casual." }
+                    ]
+                }
+            }
+        };
+
+        // Default fallback outfit suggestions for items without specific data
+        const defaultOutfits = {
+            casual: {
+                spring: [
+                    { title: "Weekend Casual", description: "Styled in a relaxed way with complementary spring pieces. Perfect for everyday wear." },
+                    { title: "Outdoor Ready", description: "Paired with seasonal items for a comfortable yet put-together spring look." }
+                ],
+                summer: [
+                    { title: "Summer Day", description: "Styled for warm weather with light, breathable pieces. Casual and comfortable." },
+                    { title: "Evening Casual", description: "Perfect for summer nights with appropriate layers and seasonal accessories." }
+                ],
+                fall: [
+                    { title: "Autumn Casual", description: "Layered appropriately for fall weather with seasonal colors and textures." },
+                    { title: "Weekend Comfort", description: "Styled for practicality and comfort while maintaining a put-together fall look." }
+                ],
+                winter: [
+                    { title: "Winter Warmth", description: "Layered for cold weather while maintaining style and comfort." },
+                    { title: "Cozy Day", description: "Perfect for staying warm and stylish during winter casual activities." }
+                ]
+            },
+            work: {
+                spring: [
+                    { title: "Office Appropriate", description: "Professional styling for spring with seasonal colors and appropriate layers." },
+                    { title: "Business Meeting", description: "Polished and put-together for spring professional settings." }
+                ],
+                summer: [
+                    { title: "Summer Professional", description: "Breathable yet appropriate for warm weather office environments." },
+                    { title: "Business Casual", description: "Relaxed yet professional styling for summer workdays." }
+                ],
+                fall: [
+                    { title: "Fall Workwear", description: "Seasonal professional styling with appropriate layers and textures." },
+                    { title: "Client Ready", description: "Polished fall look suitable for important meetings and presentations." }
+                ],
+                winter: [
+                    { title: "Winter Professional", description: "Warm yet polished styling for cold weather workdays." },
+                    { title: "Office Layers", description: "Professional winter look with appropriate layers for comfort and style." }
+                ]
+            },
+            date: {
+                spring: [
+                    { title: "Spring Romance", description: "Styled for a special evening out with seasonal touches and appropriate formality." },
+                    { title: "Casual Date", description: "Relaxed yet thoughtful spring styling perfect for a casual date night." }
+                ],
+                summer: [
+                    { title: "Summer Evening", description: "Light and appropriate for warm weather date nights with seasonal touches." },
+                    { title: "Outdoor Date", description: "Perfect for summer activities while maintaining a special occasion feel." }
+                ],
+                fall: [
+                    { title: "Autumn Evening", description: "Cozy yet stylish for fall date nights with seasonal colors and textures." },
+                    { title: "Dinner Date", description: "Appropriate fall styling for a special evening out." }
+                ],
+                winter: [
+                    { title: "Winter Romance", description: "Warm yet elegant styling for cold weather date nights." },
+                    { title: "Cozy Evening", description: "Perfect balance of comfort and style for winter special occasions." }
+                ]
+            },
+            formal: {
+                spring: [
+                    { title: "Spring Event", description: "Elegant styling appropriate for formal spring occasions." },
+                    { title: "Special Occasion", description: "Dressed up with seasonal touches for spring formal events." }
+                ],
+                summer: [
+                    { title: "Summer Formal", description: "Appropriate for warm weather formal events with seasonal considerations." },
+                    { title: "Evening Event", description: "Elegant summer styling for special occasions and formal gatherings." }
+                ],
+                fall: [
+                    { title: "Autumn Formal", description: "Sophisticated styling with seasonal colors and textures for fall events." },
+                    { title: "Gala Ready", description: "Formal fall attire appropriate for upscale events and celebrations." }
+                ],
+                winter: [
+                    { title: "Winter Formal", description: "Elegant cold weather styling for formal events and celebrations." },
+                    { title: "Holiday Event", description: "Festive yet sophisticated for winter formal occasions." }
+                ]
+            },
+            weekend: {
+                spring: [
+                    { title: "Weekend Adventure", description: "Practical yet stylish for spring weekend activities and outings." },
+                    { title: "Casual Outing", description: "Relaxed spring styling perfect for weekend social events." }
+                ],
+                summer: [
+                    { title: "Summer Fun", description: "Casual and practical for warm weather weekend activities." },
+                    { title: "Day Trip", description: "Comfortable summer styling perfect for weekend adventures." }
+                ],
+                fall: [
+                    { title: "Fall Activities", description: "Practical yet seasonal styling for autumn weekend outings." },
+                    { title: "Weekend Comfort", description: "Cozy yet put-together for fall casual events and activities." }
+                ],
+                winter: [
+                    { title: "Winter Weekend", description: "Warm and practical styling for cold weather casual activities." },
+                    { title: "Cozy Outing", description: "Comfortable yet stylish for winter weekend social events." }
+                ]
+            }
+        };
+
+        // Function to populate clothing type dropdown based on selected category
+        function populateClothingTypes(category) {
+            const clothingTypeSelect = document.getElementById('clothing-type');
+            clothingTypeSelect.innerHTML = '';
+            
+            clothingCategories[category].forEach(item => {
+                const option = document.createElement('option');
+                option.value = item;
+                option.textContent = clothingNames[item];
+                clothingTypeSelect.appendChild(option);
+            });
+        }
+
+        // Initialize with tops category
+        populateClothingTypes('tops');
+
+        // Add event listeners to category tabs
+        document.querySelectorAll('.category-tab').forEach(tab => {
+            tab.addEventListener('click', function() {
+                // Remove active class from all tabs
+                document.querySelectorAll('.category-tab').forEach(t => {
+                    t.classList.remove('active');
+                    t.classList.remove('bg-indigo-100', 'text-indigo-800', 'bg-purple-100', 'text-purple-800');
+                    
+                    // Alternate colors for tabs
+                    const index = Array.from(document.querySelectorAll('.category-tab')).indexOf(t);
+                    if (index % 2 === 0) {
+                        t.classList.add('bg-indigo-100', 'text-indigo-800');
+                    } else {
+                        t.classList.add('bg-purple-100', 'text-purple-800');
+                    }
+                });
+                
+                // Add active class to clicked tab
+                this.classList.add('active');
+                this.classList.remove('bg-indigo-100', 'text-indigo-800', 'bg-purple-100', 'text-purple-800');
+                
+                // Populate clothing types based on selected category
+                const category = this.getAttribute('data-category');
+                populateClothingTypes(category);
+            });
+        });
+
+        // Generate outfit suggestions
+        document.getElementById('generate-btn').addEventListener('click', function() {
+            const clothingType = document.getElementById('clothing-type').value;
+            const occasion = document.getElementById('occasion').value;
+            const season = document.getElementById('season').value;
+            
+            // Show loading state
+            document.getElementById('initial-state').classList.add('hidden');
+            document.getElementById('loading').classList.remove('hidden');
+            document.getElementById('results').classList.add('hidden');
+            
+            // Simulate AI processing time
+            setTimeout(function() {
+                generateOutfits(clothingType, occasion, season);
+                
+                // Hide loading, show results
+                document.getElementById('loading').classList.add('hidden');
+                document.getElementById('results').classList.remove('hidden');
+                
+                // Show saved outfits section if it has items
+                const savedContainer = document.getElementById('saved-outfits-container');
+                if (savedContainer.children.length > 0) {
+                    document.getElementById('saved-outfits').classList.remove('hidden');
+                }
+            }, 1200);
+        });
+        
+        // Generate outfit suggestions
+        function generateOutfits(clothingType, occasion, season) {
+            const outfitsContainer = document.getElementById('outfits-container');
+            outfitsContainer.innerHTML = '';
+            
+            let outfits;
+            let clothingName;
+            
+            // Check if we have specific data for this clothing item
+            if (clothingData[clothingType] && 
+                clothingData[clothingType][occasion] && 
+                clothingData[clothingType][occasion][season]) {
+                outfits = clothingData[clothingType][occasion][season];
+                clothingName = clothingData[clothingType].name;
+            } else {
+                // Use default outfits if specific data is not available
+                outfits = defaultOutfits[occasion][season];
+                clothingName = clothingNames[clothingType] || "Selected Item";
+            }
+            
+            outfits.forEach((outfit, index) => {
+                const outfitCard = document.createElement('div');
+                outfitCard.className = 'outfit-card bg-white rounded-xl shadow-md overflow-hidden transition-all';
+                
+                const tagClass = index % 2 === 0 ? 'tag-blue' : 'tag-purple';
+                
+                outfitCard.innerHTML = `
+                    <div class="p-6">
+                        <div class="flex justify-between items-start mb-4">
+                            <h3 class="text-xl font-semibold text-indigo-900">${outfit.title}</h3>
+                            <span class="px-3 py-1 ${tagClass} rounded-full text-sm font-medium">${season}</span>
+                        </div>
+                        <p class="text-gray-700 mb-6">${outfit.description}</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm text-purple-700 font-medium">For: ${occasion.charAt(0).toUpperCase() + occasion.slice(1)}</span>
+                            <button class="save-outfit px-4 py-2 bg-indigo-100 hover:bg-indigo-200 text-indigo-700 rounded-lg transition-colors flex items-center">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />
+                                </svg>
+                                Save
+                            </button>
+                        </div>
+                    </div>
+                `;
+                
+                outfitsContainer.appendChild(outfitCard);
+                
+                // Add event listener to save button
+                outfitCard.querySelector('.save-outfit').addEventListener('click', function() {
+                    saveOutfit(clothingName, outfit.title, outfit.description, season, occasion);
+                    this.innerHTML = `
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                        </svg>
+                        Saved
+                    `;
+                    this.classList.remove('bg-indigo-100', 'hover:bg-indigo-200', 'text-indigo-700');
+                    this.classList.add('bg-green-100', 'text-green-700', 'cursor-default');
+                    this.disabled = true;
+                });
+            });
+        }
+        
+        // Save outfit to collection
+        function saveOutfit(clothingName, title, description, season, occasion) {
+            const savedContainer = document.getElementById('saved-outfits-container');
+            
+            const savedCard = document.createElement('div');
+            savedCard.className = 'outfit-card bg-white rounded-xl shadow-md overflow-hidden';
+            
+            const tagClass = Math.random() > 0.5 ? 'tag-blue' : 'tag-purple';
+            
+            savedCard.innerHTML = `
+                <div class="p-5">
+                    <div class="flex justify-between items-start mb-2">
+                        <h3 class="text-lg font-semibold text-indigo-900">${title}</h3>
+                        <button class="delete-outfit text-gray-400 hover:text-red-500">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
+                        </button>
+                    </div>
+                    <p class="text-sm text-purple-700 font-medium mb-2">${clothingName}</p>
+                    <p class="text-gray-700 text-sm mb-3">${description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="px-2 py-1 ${tagClass} rounded-full text-xs font-medium">${season}</span>
+                        <span class="px-2 py-1 ${Math.random() > 0.5 ? 'tag-purple' : 'tag-blue'} rounded-full text-xs font-medium">${occasion.charAt(0).toUpperCase() + occasion.slice(1)}</span>
+                    </div>
+                </div>
+            `;
+            
+            savedContainer.appendChild(savedCard);
+            
+            // Show saved outfits section if it was hidden
+            document.getElementById('saved-outfits').classList.remove('hidden');
+            
+            // Add event listener to delete button
+            savedCard.querySelector('.delete-outfit').addEventListener('click', function() {
+                savedCard.remove();
+                
+                // Hide saved outfits section if empty
+                if (savedContainer.children.length === 0) {
+                    document.getElementById('saved-outfits').classList.add('hidden');
+                }
+            });
+        }
+        
+        // Clear all saved outfits
+        document.getElementById('clear-saved').addEventListener('click', function() {
+            const savedContainer = document.getElementById('saved-outfits-container');
+            savedContainer.innerHTML = '';
+            document.getElementById('saved-outfits').classList.add('hidden');
+        });
+    </script>
+</body>
+</html>
